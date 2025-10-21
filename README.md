@@ -1,59 +1,24 @@
-# PrimengQuickstart
+Descrição
+Este projeto é um sistema front-end básico para a visualização e simulação de vendas de consórcio de motocicletas. Foi desenvolvido como um projeto de aprendizado inicial, focando na arquitetura moderna do Angular, gerenciamento de estado simulado (Services) e estilização de componentes.
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.6.
+🛠️ Stack Tecnológica
+O projeto foi construído utilizando as seguintes tecnologias principais:
 
-## Development server
+Framework: Angular 19 (Componentes Standalone)
 
-To start a local development server, run:
+Estilização: Tailwind CSS (Utility-First CSS)
 
-```bash
-ng serve
-```
+Componentes UI: PrimeNG (Tabela/Grades e UI Elements)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Gerenciamento de Dados: RxJS (Observables e Service Architecture)
 
-## Code scaffolding
+Versão: TypeScript
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+✨ Principais Funcionalidades (MVP)
+Listagem de Consórcios: Exibição de todos os planos disponíveis utilizando o componente p-table do PrimeNG.
 
-```bash
-ng generate component component-name
-```
+Roteamento Dinâmico: Navegação entre a lista e os detalhes do produto, capturando o ID do consórcio via ActivatedRoute.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Service Architecture: Implementação de um ConsorcioService para centralizar a lógica e simular a comunicação com uma API.
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Data Binding: Uso de *ngFor, *ngIf, [ngClass] e Pipes (currency, pt-BR) para formatar e exibir os dados corretamente.
