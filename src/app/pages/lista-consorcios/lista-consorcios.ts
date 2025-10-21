@@ -2,10 +2,17 @@ import { RouterLink } from "@angular/router";
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+// Importando os componentes do PrimeNG necessários
+import { CardModule } from 'primeng/card';
+import { TagModule} from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 
 import { ConsorcioService } from '../../services/consorcio';
 import { Consorcio } from '../../models/consorcio.model';
+
+
+// Mapeamento dos tipos aceitos pelo PrimeNG
+type SeverityType = 'success' | 'secondary' | 'info' | 'warn' | 'danger' | 'contrast' | null | undefined;
 
 /**
  * Página que lista os consórcios disponíveis.
@@ -27,12 +34,14 @@ import { Consorcio } from '../../models/consorcio.model';
 @Component({
   selector: 'app-lista-consorcios',
   standalone: true,
-  imports: [RouterLink, CommonModule, ButtonModule],
+  imports: [RouterLink, CommonModule, ButtonModule, CardModule, TagModule],
   templateUrl: './lista-consorcios.html',
   styleUrls: ['./lista-consorcios.css']
 })
 
+
 export class ListaConsorcios implements OnInit {
+
 
     /** Lista de consórcios exibida no template. Inicialmente vazia. */
     consorcios: Consorcio[] = [];
@@ -59,6 +68,23 @@ export class ListaConsorcios implements OnInit {
      *   do `async` pipe no template para gerenciamento automático do ciclo do
      *   observable.
      */
+
+    
+
+    getStatusSeverity(status: string): SeverityType {
+            switch (status) {
+                case 'Disponível':
+                    return 'success';
+                case 'Esgotado':
+                    return 'danger';
+                case 'Em formação':
+                    return 'info';
+                default:
+                    return 'secondary';
+            }
+        }
+
+
     ngOnInit(): void {
 
         this.consorcioService.getConsorcios().subscribe(data => {
