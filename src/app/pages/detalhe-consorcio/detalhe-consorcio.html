@@ -1,0 +1,126 @@
+<div>
+    <!-- Link de navegação interna: usa routerLink para navegação SPA sem reload -->
+    <a routerLink="/consorcios">
+        Voltar para a lista de consórcios
+    </a>
+
+    <!-- Estado de carregamento: exibido enquanto o componente busca dados -->
+    <div>
+        <p *ngIf="isLoading">Carregando detalhes do consórcio...</p>
+    </div>
+
+    <!--
+        Bloco principal de detalhes: renderizado quando o carregamento terminou
+        e `consorcioDetalhe` está disponível.
+        - Usa interpolação ({{ }}) para mostrar propriedades do objeto.
+        - Usa o pipe `currency` para formatar valores monetários.
+        Nota: o pipe respeita o LOCALE_ID configurado (pt-BR neste projeto).
+    -->
+    <div *ngIf="!isLoading && consorcioDetalhe">
+        <h2>Detalhes do Consórcio: {{ consorcioDetalhe.moto }}</h2>
+        <div>
+            <!-- currency: formata de acordo com o locale; adicionar 'BRL' é opcional -->
+            <p>Valor total do bem: {{consorcioDetalhe.valorTotal | currency: 'BRL' : 'symbol' : '1.2-2' }}</p>
+            <p>Valor da parcela: {{consorcioDetalhe.parcelaMensal | currency: 'BRL' : 'symbol' : '1.2-2' }}</p>
+            <p>Prazo: {{consorcioDetalhe.prazo}} meses</p>
+
+            <!--
+                ngClass com objeto: aplica classes condicionais conforme status.
+                As classes ('text-green', 'text-red', 'text-blue') devem existir
+                em `detalhe-consorcio.css` para surtir efeito visual.
+            -->
+            <p [ngClass]="{
+                'text-green': consorcioDetalhe.status === 'Disponível',
+                'text-red': consorcioDetalhe.status === 'Esgotado',
+                'text-blue': consorcioDetalhe.status === 'Em formação'
+            }">
+                <!-- Texto exibido com o status atual do grupo -->
+                Status do Grupo: {{consorcioDetalhe.status}}
+            </p>
+        </div>
+        <div>
+            <h3>Simule seu consorcio</h3>
+            <div>
+                <h3>Número de parcelas:</h3>
+                
+                    <form [formGroup]="formSimulacao" (ngSubmit)="enviarSimulacao()">
+                        <ng-container *ngFor="let num of opcoesParcelas">
+                            <label>
+                                <input type="radio" [value]="num" formControlName="numeroParcelas" />
+                                <span></span>
+
+                                <span>
+                                    {{ num }}x
+                                </span>
+                            </label>
+                        </ng-container>
+            <div>
+                <h3>Valor da parcela:</h3>
+
+                <div>
+                    <div>
+                        <p class="text-4xl font-extrabold text-red-600">
+                            {{ valorParcelaComSeguro | currency: 'BRL' : 'symbol' : '1.2-2' }}
+                        </p>
+                        <p>Com seguro</p>
+                    </div>
+
+                    <div>
+                        <p class="text-4xl font-extrabold text-gray-600">
+                            {{ valorParcelaSemSeguro | currency: 'BRL' : 'symbol' : '1.2-2' }}
+                        </p>
+                        <p>Sem seguro</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label for="nome">Nome Completo</label>
+                <input id="nome" placeholder="Ex: José da Silva" formControlName="nome" type="text" />
+                <div
+                    *ngIf="formSimulacao.get('nome')?.invalid && formSimulacao.get('nome')?.dirty || formSimulacao.get('nome')?.touched">
+                    <p class="text-red" *ngIf="formSimulacao.get('nome')?.errors?.['required']">O nome é obrigatório</p>
+                    <p class="text-red" *ngIf="formSimulacao.get('nome')?.errors?.['minlength']"> O nome deve ter no
+                        mínimo 3 caracteres</p>
+                </div>
+            </div>
+            <div>
+                <label for="email">E-mail</label>
+                <input id="email" placeholder="Ex: email@exemplo.com" formControlName="email" type="email" />
+                <div
+                    *ngIf="formSimulacao.get('email')?.invalid && formSimulacao.get('email')?.dirty || formSimulacao.get('email')?.touched">
+                    <p class="text-red" *ngIf="formSimulacao.get('email')?.errors?.['required']">O email é obrigatório
+                    </p>
+                    <p class="text-red" *ngIf="formSimulacao.get('email')?.errors?.['email']"> Por favor, insira um
+                        e-mail válido</p>
+                </div>
+            </div>
+            <div>
+                <label for="valor">Valor do Consórcio (R$): </label>
+                <input id="valor" formControlName="valorDesejado" type="number" />
+                <div
+                    *ngIf="formSimulacao.get('valorDesejado')?.invalid && formSimulacao.get('valorDesejado')?.dirty || formSimulacao.get('valorDesejado')?.touched">
+                    <p class="text-red" *ngIf="formSimulacao.get('email')?.errors?.['min']">O valor mínimo é de R$
+                        1.000,00</p>
+
+                </div>
+                <div>
+                    <input id="aceite" formControlName="aceiteContrato" type="checkbox" />
+                    <label for="aceite">Concordo em ser contactado por um consultor</label>
+                </div>
+            </div>
+            <button type="reset" (click)="resetarFormulario()">Limpar</button>
+            <button type="submit" [disabled]="isSending">
+                <span *ngIf="!isSending">Simular e Enviar Proposta</span>
+                <span *ngIf="isSending">Enviando... Aguarde</span>
+            </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Fallback quando o consórcio não foi encontrado (após carregar) -->
+    <div *ngIf="!isLoading && !consorcioDetalhe">
+        <p>Consórcio não encontrado. O plano de consorcio que voce tentou acessar nao existe</p>
+    </div>
+
+</div>

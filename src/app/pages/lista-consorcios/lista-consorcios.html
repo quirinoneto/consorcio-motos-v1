@@ -1,0 +1,45 @@
+<div>
+    <!-- Título da página -->
+    <h2>Lista de Consorcios</h2>
+
+    <!--
+        Mensagem quando não há consórcios: usa *ngIf para checar se o array
+        `consorcios` não existe ou está vazio.
+    -->
+    <div *ngIf="!consorcios || consorcios.length === 0">
+        Nenhum consórcio disponível no momento.
+    </div>
+
+    <!--
+        Lista de consórcios quando disponível:
+        - *ngFor itera sobre `consorcios` exposto pelo componente.
+        - Dentro do loop usamos interpolação {{ }} para exibir campos.
+        - `currency` pipe formata os valores monetários conforme o locale.
+    -->
+    <div *ngIf="consorcios && consorcios.length > 0">
+        <div *ngFor="let item of consorcios">
+           <!-- Nome da moto/descrição do consórcio -->
+           <h3> {{item.moto}}</h3>
+
+           <!-- ID do item: útil para debug ou navegação -->
+           <span>{{item.id}}</span> <br>
+
+           <!-- Valores formatados: currency pipe respeita LOCALE_ID (pt-BR configurado) -->
+           <span>{{item.valorTotal  | currency }}</span><br>
+           <span>{{item.parcelaMensal  | currency }}</span><br>
+
+           <!-- Prazo em meses -->
+           <span>{{item.prazo}} meses</span><br>
+
+           <!-- Status do grupo (Disponível, Esgotado, Em formação) -->
+           <span>{{item.status}}</span>
+
+           <!-- Link para a página de detalhe deste consórcio. Usa routerLink com array -->
+           <div>
+             <a [routerLink]="['/consorcios', item.id]">Ver Detalhe</a>
+           </div>
+
+           <p-button label="Check" />
+        </div>
+    </div>
+</div>
